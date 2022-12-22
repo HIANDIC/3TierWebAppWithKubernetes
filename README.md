@@ -17,10 +17,10 @@
     - Resultserver Deployment
     - Resultserver Service
     
-4. We go on K8s and make some additional configuration to make our infrastructure more flexible and secure. Therefore we will create secret and configmap objects.
+4. We go on K8s and make some additional configuration to make our infrastructure more flexible and secure. Therefore secret and configmap objects will be created.
     
-    -   For credentials and sensitive data we will use secret object
-    -   For other nonsensitive data we will use configmap
+    -   For credentials and sensitive data secret object will be used
+    -   For other nonsensitive data configmap will be used
 5. At the end all config files will be created as charts by using helm. After that deployment/release will be done via using helm.
 
 
