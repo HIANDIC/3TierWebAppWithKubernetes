@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resultserver-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resultserver
+  template:
+    metadata:
+      labels:
+        app: resultserver
+    spec:
+      containers:
+      - name: resultserver
+        image: joshuatallman/resultserver
+        resources:
+        env:   # we take these environmental variables from dockerhub mysql image's information. Then we assign values of them from secret and configmap
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_PASSWORD
+        envFrom:
+          - configMapRef:
+              name: server-config
+        ports:
+        - containerPort: 80
+
+          # - name: MYSQL_DATABASE_HOST
+          #   value: mysql-service
+          # - name: MYSQL_USER
+          #   value: clarus
+          # - name: MYSQL_DATABASE
+          #   value: phonebook
+          # - name: MYSQL_PASSWORD
+          #   value: Clarusway_1
+
+          # - name: MYSQL_DATABASE_HOST
+          #   valueFrom:
+          #     configMapKeyRef:
+          #       name: server-config
+          #       key: MYSQL_DATABASE_HOST
+          # - name: MYSQL_USER
+          #   valueFrom:
+          #     configMapKeyRef:
+          #       name: server-config
+          #       key: MYSQL_USER
+          # - name: MYSQL_DATABASE
+          #   valueFrom:
+          #     configMapKeyRef:
+          #       name: server-config
+          #       key: MYSQL_DATABASE
