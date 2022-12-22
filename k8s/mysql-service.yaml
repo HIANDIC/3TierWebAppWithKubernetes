@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  # normally type of service is ClusterIP. Because of that we do not need to write the type here.
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306

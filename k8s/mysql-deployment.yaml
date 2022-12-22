@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        resources:
+        envFrom:    # we take these environmental variables from dockerhub mysql image's information. Then we assign values of them from secret and configmap
+          - configMapRef:
+              name: mysql-config
+          - secretRef:
+              name: mysql-secret
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+          - name: mysql-persistent-volume
+            mountPath: /var/lib/mysql       # we take it from dockerhub mysql image's information
+      volumes:
+        - name: mysql-persistent-volume
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+
+            
+        # env:    # we take these environmental variables from dockerhub mysql image's information
+        #   - name: MYSQL_ROOT_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: mysql-secret
+        #         key: MYSQL_ROOT_PASSWORD
+        #   - name: MYSQL_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: mysql-secret
+        #         key: MYSQL_PASSWORD
+        #   - name: MYSQL_DATABASE
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: mysql-config
+        #         key: MYSQL_DATABASE
+        #   - name: MYSQL_USER
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: mysql-config
+        #         key: MYSQL_USER
+          # - name: MYSQL_DATABASE
+          #   value: phonebook
+          # - name: MYSQL_USER
+          #   value: clarus
+          # - name: MYSQL_ROOT_PASSWORD
+          #   value: Aa123456aa
+          # - name: MYSQL_PASSWORD
+          #   value: Clarusway_1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
