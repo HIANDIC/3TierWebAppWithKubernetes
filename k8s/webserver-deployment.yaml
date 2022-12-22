@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+      - name: webserver
+        image: halilandic/webserver
+        resources:
+        env:    # to bind database we should declare these environmental variables
+          - name: MYSQL_DATABASE_HOST
+            value: mysql-service
+          - name: MYSQL_USER
+            value: clarus
+          - name: MYSQL_PASSWORD
+            value: Clarusway_1
+          - name: MYSQL_DATABASE
+            value: phonebook
+        ports:
+        - containerPort: 80
